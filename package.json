@@ -19,7 +19,7 @@
     ],
     "license": "Apache-2.0",
     "name": "dhl-ecommerce-solutions",
-    "repository": "https://github.com/mediocre/dhl-ecommerce-solutions",
+    "repository": "https://github.com/stores-com/dhl-ecommerce-solutions",
     "scripts": {
         "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
         "test": "mocha --exit --reporter spec test"
