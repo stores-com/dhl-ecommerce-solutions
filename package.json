@@ -17,7 +17,7 @@
         "tracking",
         "zpl"
     ],
-    "license": "Apache-2.0",
+    "license": "MIT",
     "name": "dhl-ecommerce-solutions",
     "repository": "https://github.com/stores-com/dhl-ecommerce-solutions",
     "scripts": {
