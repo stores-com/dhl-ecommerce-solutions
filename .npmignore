@@ -1,5 +1,6 @@
 .coveralls.yml
 .eslintrc.js
 .github
+CLAUDE.md
 coverage
 test

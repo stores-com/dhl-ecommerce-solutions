@@ -7,8 +7,7 @@
     "description": "The DHL ECOMMERCE SOLUTIONS AMERICAS API is your one stop solution to get shipping products, calculating duty and tax, generating shipping labels, manifesting packages, requesting shipment pickup, tracking packages and generating return labels.",
     "devDependencies": {
         "@eslint/js": "*",
-        "globals": "*",
-        "mocha": "*"
+        "globals": "*"
     },
     "keywords": [
         "logistics",
@@ -19,10 +18,13 @@
     ],
     "license": "MIT",
     "name": "dhl-ecommerce-solutions",
-    "repository": "https://github.com/stores-com/dhl-ecommerce-solutions",
-    "scripts": {
-        "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
-        "test": "mocha --exit --reporter spec test"
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stores-com/dhl-ecommerce-solutions.git"
     },
-    "version": "0.3.1"
+    "scripts": {
+        "coveralls": "node --test --test-force-exit --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=lcov.info test && coveralls < lcov.info",
+        "test": "node --test --test-force-exit test"
+    },
+    "version": "0.4.0"
 }
