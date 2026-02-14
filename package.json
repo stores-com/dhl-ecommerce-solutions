@@ -24,7 +24,8 @@
     },
     "scripts": {
         "coveralls": "node --test --test-force-exit --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=lcov.info test && coveralls < lcov.info",
-        "test": "node --test --test-force-exit test"
+        "test": "node --test --test-force-exit test",
+        "test:only": "node --test --test-force-exit --test-only test"
     },
     "version": "0.4.0"
 }
