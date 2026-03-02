@@ -2,6 +2,8 @@
 
 [![Build Status](https://github.com/stores-com/dhl-ecommerce-solutions/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/stores-com/dhl-ecommerce-solutions/actions?query=workflow%3ATest+branch%3Amain)
 [![Coverage Status](https://coveralls.io/repos/github/stores-com/dhl-ecommerce-solutions/badge.svg?branch=main)](https://coveralls.io/github/stores-com/dhl-ecommerce-solutions?branch=main)
+[![npm version](https://img.shields.io/npm/v/dhl-ecommerce-solutions)](https://www.npmjs.com/package/dhl-ecommerce-solutions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 The DHL ECOMMERCE SOLUTIONS AMERICAS API is your one stop solution to get shipping products, calculating duty and tax, generating shipping labels, manifesting packages, requesting shipment pickup, tracking packages and generating return labels.
 
