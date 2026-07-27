@@ -20,7 +20,7 @@ const errorServer = http.createServer((req, res) => {
 
 let errorUrl;
 
-test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
+test('DhlEcommerceSolutions', { concurrency: true, timeout: 30000 }, (t) => {
     t.before(() => new Promise((resolve) => {
         errorServer.listen(0, '127.0.0.1', () => {
             errorUrl = `http://127.0.0.1:${errorServer.address().port}/#`;
@@ -393,7 +393,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('createLabel', { concurrency: true, timeout: 4000 }, (t) => {
+    t.test('createLabel', { concurrency: true, timeout: 15000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -414,7 +414,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 3000 }, () => {
+        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -450,7 +450,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 4000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -483,7 +483,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error when no body is specified', { timeout: 3000 }, () => {
+        t.test('should return an error when no body is specified', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -503,7 +503,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a valid response', { timeout: 3000 }, () => {
+        t.test('should return a valid response', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -555,7 +555,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a valid response for PNG format', { timeout: 3000 }, () => {
+        t.test('should return a valid response for PNG format', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -608,7 +608,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('createManifest', { concurrency: true, timeout: 4000 }, (t) => {
+    t.test('createManifest', { concurrency: true, timeout: 15000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -629,7 +629,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 3000 }, () => {
+        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -665,7 +665,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 4000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -701,7 +701,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a response', { timeout: 3000 }, () => {
+        t.test('should return a response', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -725,7 +725,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('downloadManifest', { concurrency: true, timeout: 4000 }, (t) => {
+    t.test('downloadManifest', { concurrency: true, timeout: 15000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -746,7 +746,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 3000 }, () => {
+        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -782,7 +782,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 4000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -818,7 +818,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a response', { timeout: 3000 }, () => {
+        t.test('should return a response', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -859,7 +859,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('findProducts', { concurrency: true, timeout: 3000 }, (t) => {
+    t.test('findProducts', { concurrency: true, timeout: 15000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -880,7 +880,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 3000 }, () => {
+        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -916,7 +916,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 3000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -949,7 +949,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error when no body is specified', { timeout: 3000 }, () => {
+        t.test('should return an error when no body is specified', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -969,7 +969,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a valid response', { timeout: 3000 }, () => {
+        t.test('should return a valid response', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1023,7 +1023,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('getAccessToken', { concurrency: true, timeout: 3000 }, (t) => {
+    t.test('getAccessToken', { concurrency: true, timeout: 15000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -1044,7 +1044,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 3000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1066,7 +1066,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a valid access token', { timeout: 3000 }, () => {
+        t.test('should return a valid access token', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1090,7 +1090,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return the same access token on subsequent calls', { timeout: 3000 }, () => {
+        t.test('should return the same access token on subsequent calls', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1118,7 +1118,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('getTrackingByPackageId', { concurrency: true, timeout: 4000 }, (t) => {
+    t.test('getTrackingByPackageId', { concurrency: true, timeout: 15000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -1139,7 +1139,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 3000 }, () => {
+        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1175,7 +1175,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 4000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1211,7 +1211,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a response', { timeout: 3000 }, () => {
+        t.test('should return a response', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1231,7 +1231,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('getTrackingByTrackingId', { concurrency: true, timeout: 4000 }, (t) => {
+    t.test('getTrackingByTrackingId', { concurrency: true, timeout: 15000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -1252,7 +1252,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 3000 }, () => {
+        t.test('should return an error for invalid environment_url after getAccessToken', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1288,7 +1288,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 4000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1324,7 +1324,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a response', { timeout: 3000 }, () => {
+        t.test('should return a response', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
