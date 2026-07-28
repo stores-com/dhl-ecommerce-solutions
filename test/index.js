@@ -6,7 +6,7 @@ const cache = require('memory-cache');
 
 const DhlEcommerceSolutions = require('../index');
 
-test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
+test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
     t.test('applyDimensionalWeight', { concurrency: true, timeout: 1000 }, (t) => {
         const createRequest = () => ({
             consigneeAddress: {
@@ -836,7 +836,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('findProducts', { concurrency: true, timeout: 3000 }, (t) => {
+    t.test('findProducts', { concurrency: true, timeout: 10000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -946,7 +946,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a valid response', { timeout: 3000 }, () => {
+        t.test('should return a valid response', { timeout: 10000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
