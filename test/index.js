@@ -31,7 +31,7 @@ test.after(() => {
     errorServer.close();
 });
 
-test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
+test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
     t.test('applyDimensionalWeight', { concurrency: true, timeout: 1000 }, (t) => {
         const createRequest = () => ({
             consigneeAddress: {
@@ -1120,7 +1120,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('getTrackingByPackageId', { concurrency: true, timeout: 4000 }, (t) => {
+    t.test('getTrackingByPackageId', { concurrency: true, timeout: 8000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -1213,7 +1213,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a response', { timeout: 3000 }, () => {
+        t.test('should return a response', { timeout: 6000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1233,7 +1233,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
         });
     });
 
-    t.test('getTrackingByTrackingId', { concurrency: true, timeout: 4000 }, (t) => {
+    t.test('getTrackingByTrackingId', { concurrency: true, timeout: 8000 }, (t) => {
         t.test('should return an error for invalid environment_url', { timeout: 1000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
@@ -1326,7 +1326,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
             });
         });
 
-        t.test('should return a response', { timeout: 3000 }, () => {
+        t.test('should return a response', { timeout: 6000 }, () => {
             return new Promise((resolve, reject) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
