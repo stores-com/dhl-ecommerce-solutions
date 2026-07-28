@@ -1,10 +1,35 @@
 const assert = require('node:assert');
 const crypto = require('node:crypto');
+const http = require('node:http');
 const test = require('node:test');
 
 const cache = require('memory-cache');
 
 const DhlEcommerceSolutions = require('../index');
+
+const errorServer = http.createServer((req, res) => {
+    res.writeHead(500);
+    res.end();
+});
+
+// Stands in for a DHL endpoint that is returning a 500. The trailing `#` turns
+// everything the client appends to environment_url into a fragment, so every
+// request lands on this server regardless of path.
+let errorUrl;
+
+test.before(() => {
+    return new Promise((resolve) => {
+        errorServer.listen(0, '127.0.0.1', () => {
+            errorUrl = `http://127.0.0.1:${errorServer.address().port}/#`;
+
+            resolve();
+        });
+    });
+});
+
+test.after(() => {
+    errorServer.close();
+});
 
 test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
     t.test('applyDimensionalWeight', { concurrency: true, timeout: 1000 }, (t) => {
@@ -439,7 +464,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: errorUrl
                         });
 
                         dhlEcommerceSolutions.createLabel({}, (err, response) => {
@@ -654,10 +679,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put(`${errorUrl}/auth/v4/accesstoken?client_id=undefined`, accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: errorUrl
                         });
 
                         dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '5351244' }, (err, response) => {
@@ -771,10 +796,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put(`${errorUrl}/auth/v4/accesstoken?client_id=undefined`, accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: errorUrl
                         });
 
                         dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a', (err, response) => {
@@ -905,7 +930,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: errorUrl
                         });
 
                         dhlEcommerceSolutions.findProducts({}, (err, response) => {
@@ -1026,7 +1051,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
                     client_secret: process.env.CLIENT_SECRET,
-                    environment_url: 'https://httpbin.org/status/500#'
+                    environment_url: errorUrl
                 });
 
                 dhlEcommerceSolutions.getAccessToken((err, accessToken) => {
@@ -1164,10 +1189,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put(`${errorUrl}/auth/v4/accesstoken?client_id=undefined`, accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: errorUrl
                         });
 
                         dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', (err, response) => {
@@ -1277,10 +1302,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put(`${errorUrl}/auth/v4/accesstoken?client_id=undefined`, accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: errorUrl
                         });
 
                         dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299', (err, response) => {
