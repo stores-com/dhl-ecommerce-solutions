@@ -439,7 +439,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: 'https://httpbun.com/status/500#'
                         });
 
                         dhlEcommerceSolutions.createLabel({}, (err, response) => {
@@ -654,10 +654,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put('https://httpbun.com/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: 'https://httpbun.com/status/500#'
                         });
 
                         dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '5351244' }, (err, response) => {
@@ -771,10 +771,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put('https://httpbun.com/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: 'https://httpbun.com/status/500#'
                         });
 
                         dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a', (err, response) => {
@@ -905,7 +905,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: 'https://httpbun.com/status/500#'
                         });
 
                         dhlEcommerceSolutions.findProducts({}, (err, response) => {
@@ -1026,7 +1026,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                 const dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
                     client_secret: process.env.CLIENT_SECRET,
-                    environment_url: 'https://httpbin.org/status/500#'
+                    environment_url: 'https://httpbun.com/status/500#'
                 });
 
                 dhlEcommerceSolutions.getAccessToken((err, accessToken) => {
@@ -1164,10 +1164,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put('https://httpbun.com/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: 'https://httpbun.com/status/500#'
                         });
 
                         dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', (err, response) => {
@@ -1277,10 +1277,10 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 4000 }, (t) => {
                         assert.ifError(err);
 
                         // Update cache
-                        cache.put('https://httpbin.org/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
+                        cache.put('https://httpbun.com/status/500#/auth/v4/accesstoken?client_id=undefined', accessToken, accessToken.expires_in * 1000 / 2);
 
                         dhlEcommerceSolutions = new DhlEcommerceSolutions({
-                            environment_url: 'https://httpbin.org/status/500#'
+                            environment_url: 'https://httpbun.com/status/500#'
                         });
 
                         dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299', (err, response) => {
