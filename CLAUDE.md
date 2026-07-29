@@ -11,7 +11,10 @@ This is a Node.js SDK for the DHL eCommerce Solutions Americas API. It provides 
 ### Testing
 - `npm test` - Run all tests using the built-in `node:test` runner
 - `npm run test:only` - Run only tests marked with `{ only: true }`
-- `npm run coveralls` - Run tests with code coverage (for CI/CD)
+- `npm run coveralls` - Do not use this locally. Its final `coveralls < lcov.info` step needs a
+  `coveralls` binary that is not declared in either dependency list, so it fails with
+  command-not-found. CI does not run this script either; it uploads with `coverallsapp/github-action`.
+- For a local coverage report: `node --test --test-force-exit --experimental-test-coverage test`
 - To run tests matching a pattern: `node --test --test-force-exit --test-name-pattern "pattern" test`
 - Always keep `--test-force-exit`; the access token cache holds a timer that would otherwise
   keep the process alive. Do not add `--test-concurrency`.
