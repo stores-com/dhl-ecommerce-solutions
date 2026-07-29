@@ -9,6 +9,10 @@ The DHL ECOMMERCE SOLUTIONS AMERICAS API is your one stop solution to get shippi
 
 https://docs.api.dhlecs.com
 
+## Requirements
+
+Node.js 18 or later. This package uses the built-in `fetch` and has no HTTP dependency.
+
 ## Usage
 
 ```javascript
@@ -20,6 +24,44 @@ const dhlEcommerceSolutions = new DhlEcommerceSolutions({
     environment_url: 'https://api-sandbox.dhlecs.com'
 });
 ```
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `client_id` | | DHL API client id. |
+| `client_secret` | | DHL API client secret. |
+| `environment_url` | `https://api-sandbox.dhlecs.com` | API endpoint. Production is `https://api.dhlecs.com`. |
+| `timeout` | `10000` | Milliseconds to wait before aborting a request. |
+
+### Callbacks and async/await
+
+Every method that makes a request takes an optional callback. Omit it and the method returns a promise instead.
+
+```javascript
+// Callback
+dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', function(err, response) {
+    console.log(response);
+});
+
+// async/await
+const response = await dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482');
+```
+
+### Errors
+
+A response other than 200 produces an [HttpError](https://www.npmjs.com/package/@stores.com/http-error), passed to the callback or thrown from the promise.
+
+```javascript
+try {
+    await dhlEcommerceSolutions.createLabel(request);
+} catch (err) {
+    console.log(err.message);      // '400 Bad Request', or DHL's own text when the body carries an errors[] array
+    console.log(err.cause.status); // 400
+    console.log(err.json);         // the parsed response body
+    console.log(err.text);         // the raw response body
+}
+```
+
+A request that never reaches DHL — an unparseable `environment_url`, a network failure, or a timeout — produces the error `fetch` itself raised, with no `cause.status`.
 
 ### dhlEcommerceSolutions.applyDimensionalWeight(request, [divisor])
 
@@ -68,7 +110,7 @@ const request = {
 dhlEcommerceSolutions.applyDimensionalWeight(request);
 ```
 
-### dhlEcommerceSolutions.createLabel(request, options, callback)
+### dhlEcommerceSolutions.createLabel(request, [options], [callback])
 
 The Label endpoint can generate a US Domestic or an International label.
 
@@ -113,7 +155,7 @@ dhlEcommerceSolutions.createLabel(request, { format: 'PNG' }, function(err, resp
 });
 ```
 
-### dhlEcommerceSolutions.createManifest(request, callback)
+### dhlEcommerceSolutions.createManifest(request, [callback])
 
 Use the Manifest API to submit a request for closing out / manifesting packages and generate a Driver's Summary Manifest (DSM).
 
@@ -139,7 +181,7 @@ dhlEcommerceSolutions.createManifest(request, function(err, response) {
 });
 ```
 
-### dhlEcommerceSolutions.downloadManifest(pickup, requestId, callback)
+### dhlEcommerceSolutions.downloadManifest(pickup, requestId, [callback])
 
 For Manifest requests that were created using the Create Manifest API, the Download Manifest API is used to retrieve and download the manifests.
 
@@ -153,7 +195,7 @@ dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-9bce-4d62-a11f-f8f86
 });
 ```
 
-### dhlEcommerceSolutions.findProducts(request, callback)
+### dhlEcommerceSolutions.findProducts(request, [callback])
 
 DHL eCommerce Americas Product Finder API enables clients to determine which DHL shipping products are suitable for a given shipping request including associated rates and estimated delivery dates (EDD).
 
@@ -201,7 +243,7 @@ dhlEcommerceSolutions.findProducts(request, function(err, response) {
 });
 ```
 
-### dhlEcommerceSolutions.getAccessToken(callback)
+### dhlEcommerceSolutions.getAccessToken([callback])
 
 To access any of DHL eCommerce's API resources, client credentials (clientId and clientSecret) are required which must be exchanged for an access token.
 
@@ -215,7 +257,7 @@ dhlEcommerceSolutions.getAccessToken(function(err, accessToken) {
 });
 ```
 
-### dhlEcommerceSolutions.getTrackingByPackageId(packageId, callback)
+### dhlEcommerceSolutions.getTrackingByPackageId(packageId, [callback])
 
 This API is used to check the latest tracking status of any domestic or international package.
 
@@ -225,6 +267,20 @@ https://docs.api.dhlecs.com/?version=latest#bc8f6e5c-1bb2-45b9-8731-2a7feb5c71c7
 
 ```javascript
 dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', function(err, response) {
+    console.log(response);
+});
+```
+
+### dhlEcommerceSolutions.getTrackingByTrackingId(trackingId, [callback])
+
+This API is used to check the latest tracking status of any domestic or international package using its tracking id.
+
+https://docs.api.dhlecs.com/?version=latest#bc8f6e5c-1bb2-45b9-8731-2a7feb5c71c7
+
+**Example**
+
+```javascript
+dhlEcommerceSolutions.getTrackingByTrackingId('420300249361211015300010272828', function(err, response) {
     console.log(response);
 });
 ```

@@ -1,13 +1,15 @@
 {
     "dependencies": {
-        "http-errors": "~2.0.0",
-        "memory-cache": "~0.2.0",
-        "request": "~2.88.0"
+        "@stores.com/http-error": "~1.2.0",
+        "memory-cache": "~0.2.0"
     },
     "description": "The DHL ECOMMERCE SOLUTIONS AMERICAS API is your one stop solution to get shipping products, calculating duty and tax, generating shipping labels, manifesting packages, requesting shipment pickup, tracking packages and generating return labels.",
     "devDependencies": {
         "@eslint/js": "*",
         "globals": "*"
+    },
+    "engines": {
+        "node": ">=18"
     },
     "keywords": [
         "logistics",
@@ -27,5 +29,5 @@
         "test": "node --test --test-force-exit test",
         "test:only": "node --test --test-force-exit --test-only test"
     },
-    "version": "0.4.0"
+    "version": "0.5.0"
 }

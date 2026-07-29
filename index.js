@@ -1,10 +1,21 @@
 const cache = require('memory-cache');
-const createError = require('http-errors');
-const request = require('request');
+const HttpError = require('@stores.com/http-error');
+
+/**
+ * Throws an HttpError for any non-200 response and returns the parsed JSON body otherwise.
+ */
+async function parseResponse(res) {
+    if (res.status !== 200) {
+        throw await HttpError.from(res);
+    }
+
+    return await res.json();
+}
 
 function DhlEcommerceSolutions(args) {
     const options = Object.assign({
-        environment_url: 'https://api-sandbox.dhlecs.com'
+        environment_url: 'https://api-sandbox.dhlecs.com',
+        timeout: 10000
     }, args);
 
     /**
@@ -73,7 +84,7 @@ function DhlEcommerceSolutions(args) {
     /**
      * The Label endpoint can generate a US Domestic or an International label.
      */
-    this.createLabel = function(_request, _options, callback) {
+    this.createLabel = function(_request, _options = {}, callback) {
         // Options are optional
         if (typeof _options === 'function') {
             callback = _options;
@@ -85,34 +96,27 @@ function DhlEcommerceSolutions(args) {
             _options.format = 'ZPL';
         }
 
-        this.getAccessToken(function(err, accessToken) {
-            if (err) {
-                return callback(err);
-            }
+        const executor = async () => {
+            const accessToken = await this.getAccessToken();
 
-            const req = {
-                auth: {
-                    bearer: accessToken.access_token
+            const res = await fetch(`${options.environment_url}/shipping/v4/label?format=${_options.format}`, {
+                body: JSON.stringify(_request),
+                headers: {
+                    'Authorization': `Bearer ${accessToken.access_token}`,
+                    'Content-Type': 'application/json'
                 },
-                json: _request,
-                url: `${options.environment_url}/shipping/v4/label?format=${_options.format}`
-            };
-
-            request.post(req, function(err, res, response) {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (res.statusCode !== 200) {
-                    const err = createError(res.statusCode);
-                    err.response = response;
-
-                    return callback(err);
-                }
-
-                callback(null, response);
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
             });
-        });
+
+            return await parseResponse(res);
+        };
+
+        if (callback) {
+            executor().then(result => callback(null, result)).catch(callback);
+        } else {
+            return executor();
+        }
     };
 
     /**
@@ -120,34 +124,27 @@ function DhlEcommerceSolutions(args) {
      * Manifest all open items: The last 20,000 labels generated for the given pickup location are added to a request id and will be manifested.
      */
     this.createManifest = function(_request, callback) {
-        this.getAccessToken(function(err, accessToken) {
-            if (err) {
-                return callback(err);
-            }
+        const executor = async () => {
+            const accessToken = await this.getAccessToken();
 
-            const req = {
-                auth: {
-                    bearer: accessToken.access_token
+            const res = await fetch(`${options.environment_url}/shipping/v4/manifest`, {
+                body: JSON.stringify(_request),
+                headers: {
+                    'Authorization': `Bearer ${accessToken.access_token}`,
+                    'Content-Type': 'application/json'
                 },
-                json: _request,
-                url: `${options.environment_url}/shipping/v4/manifest`
-            };
-
-            request.post(req, function(err, res, response) {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (res.statusCode !== 200) {
-                    const err = createError(res.statusCode);
-                    err.response = response;
-
-                    return callback(err);
-                }
-
-                callback(null, response);
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
             });
-        });
+
+            return await parseResponse(res);
+        };
+
+        if (callback) {
+            executor().then(result => callback(null, result)).catch(callback);
+        } else {
+            return executor();
+        }
     };
 
     /**
@@ -156,68 +153,51 @@ function DhlEcommerceSolutions(args) {
      * @param {string} requestId DHL eCommerce manifest request ID that was provided in the POST manifest response object
      */
     this.downloadManifest = function(pickup, requestId, callback) {
-        this.getAccessToken(function(err, accessToken) {
-            if (err) {
-                return callback(err);
-            }
+        const executor = async () => {
+            const accessToken = await this.getAccessToken();
 
-            const req = {
-                auth: {
-                    bearer: accessToken.access_token
+            const res = await fetch(`${options.environment_url}/shipping/v4/manifest/${pickup}/${requestId}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken.access_token}`
                 },
-                json: true,
-                url: `${options.environment_url}/shipping/v4/manifest/${pickup}/${requestId}`
-            };
-
-            request.get(req, function(err, res, response) {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (res.statusCode !== 200) {
-                    const err = createError(res.statusCode);
-                    err.response = response;
-
-                    return callback(err);
-                }
-
-                callback(null, response);
+                signal: AbortSignal.timeout(options.timeout)
             });
-        });
+
+            return await parseResponse(res);
+        };
+
+        if (callback) {
+            executor().then(result => callback(null, result)).catch(callback);
+        } else {
+            return executor();
+        }
     };
 
     /**
      * DHL eCommerce Americas Product Finder API enables clients to determine which DHL shipping products are suitable for a given shipping request including associated rates and estimated delivery dates.
      */
     this.findProducts = function(_request, callback) {
-        this.getAccessToken(function(err, accessToken) {
-            if (err) {
-                return callback(err);
-            }
+        const executor = async () => {
+            const accessToken = await this.getAccessToken();
 
-            const req = {
-                auth: {
-                    bearer: accessToken.access_token
+            const res = await fetch(`${options.environment_url}/shipping/v4/products`, {
+                body: JSON.stringify(_request),
+                headers: {
+                    'Authorization': `Bearer ${accessToken.access_token}`,
+                    'Content-Type': 'application/json'
                 },
-                json: _request,
-                url: `${options.environment_url}/shipping/v4/products`
-            };
-
-            request.post(req, function(err, res, response) {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (res.statusCode !== 200) {
-                    const err = createError(res.statusCode);
-                    err.response = response;
-
-                    return callback(err);
-                }
-
-                callback(null, response);
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
             });
-        });
+
+            return await parseResponse(res);
+        };
+
+        if (callback) {
+            executor().then(result => callback(null, result)).catch(callback);
+        } else {
+            return executor();
+        }
     };
 
     /**
@@ -227,111 +207,88 @@ function DhlEcommerceSolutions(args) {
         const url = `${options.environment_url}/auth/v4/accesstoken`;
         const key = `${url}?client_id=${options.client_id}`;
 
-        // Try to get the access token from memory cache
-        const accessToken = cache.get(key);
+        const executor = async () => {
+            // Try to get the access token from memory cache
+            const accessToken = cache.get(key);
 
-        if (accessToken) {
-            return callback(null, accessToken);
-        }
-
-        const req = {
-            form: {
-                client_id: options.client_id,
-                client_secret: options.client_secret,
-                grant_type: 'client_credentials'
-            },
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            json: true,
-            url
-        };
-
-        request.post(req, function(err, res, response) {
-            if (err) {
-                return callback(err);
+            if (accessToken) {
+                return accessToken;
             }
 
-            if (res.statusCode !== 200) {
-                const err = createError(res.statusCode);
-                err.response = response;
+            const res = await fetch(url, {
+                body: new URLSearchParams({
+                    client_id: options.client_id,
+                    client_secret: options.client_secret,
+                    grant_type: 'client_credentials'
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
+            });
 
-                return callback(err);
-            }
+            const response = await parseResponse(res);
 
             // Put the access token in memory cache
             cache.put(key, response, response.expires_in * 1000 / 2);
 
-            callback(null, response);
-        });
+            return response;
+        };
+
+        if (callback) {
+            executor().then(result => callback(null, result)).catch(callback);
+        } else {
+            return executor();
+        }
     };
 
     /**
      * Track using a single packageId.
      */
     this.getTrackingByPackageId = function(packageId, callback) {
-        this.getAccessToken(function(err, accessToken) {
-            if (err) {
-                return callback(err);
-            }
+        const executor = async () => {
+            const accessToken = await this.getAccessToken();
 
-            const req = {
-                auth: {
-                    bearer: accessToken.access_token
+            const res = await fetch(`${options.environment_url}/tracking/v4/package?packageId=${packageId}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken.access_token}`
                 },
-                json: true,
-                url: `${options.environment_url}/tracking/v4/package?packageId=${packageId}`
-            };
-
-            request.get(req, function(err, res, response) {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (res.statusCode !== 200) {
-                    const err = createError(res.statusCode);
-                    err.response = response;
-
-                    return callback(err);
-                }
-
-                callback(null, response);
+                signal: AbortSignal.timeout(options.timeout)
             });
-        });
+
+            return await parseResponse(res);
+        };
+
+        if (callback) {
+            executor().then(result => callback(null, result)).catch(callback);
+        } else {
+            return executor();
+        }
     };
 
     /**
      * Track using a single trackingId.
      */
     this.getTrackingByTrackingId = function(trackingId, callback) {
-        this.getAccessToken(function(err, accessToken) {
-            if (err) {
-                return callback(err);
-            }
+        const executor = async () => {
+            const accessToken = await this.getAccessToken();
 
-            const req = {
-                auth: {
-                    bearer: accessToken.access_token
+            const res = await fetch(`${options.environment_url}/tracking/v4/package?trackingId=${trackingId}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken.access_token}`
                 },
-                json: true,
-                url: `${options.environment_url}/tracking/v4/package?trackingId=${trackingId}`
-            };
-
-            request.get(req, function(err, res, response) {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (res.statusCode !== 200) {
-                    const err = createError(res.statusCode);
-                    err.response = response;
-
-                    return callback(err);
-                }
-
-                callback(null, response);
+                signal: AbortSignal.timeout(options.timeout)
             });
-        });
+
+            return await parseResponse(res);
+        };
+
+        if (callback) {
+            executor().then(result => callback(null, result)).catch(callback);
+        } else {
+            return executor();
+        }
     };
 }
 
