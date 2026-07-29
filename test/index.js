@@ -593,6 +593,50 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
             });
         });
+
+        t.test('should return a valid response when no callback is provided', { timeout: 3000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            });
+
+            const _request = {
+                consigneeAddress: {
+                    address1: '114 Whitney Ave',
+                    city: 'New Haven',
+                    country: 'US',
+                    name: 'John Doe',
+                    postalCode: '06510',
+                    state: 'CT'
+                },
+                distributionCenter: 'USDFW1',
+                orderedProductId: 'GND',
+                packageDetail: {
+                    packageDescription: 'ORDER NO 20483739DFDR',
+                    packageId: crypto.randomUUID().substring(0, 30),
+                    weight: {
+                        unitOfMeasure: 'LB',
+                        value: 3
+                    }
+                },
+                pickup: '5351244',
+                returnAddress: {
+                    address1: '1950 Parker Road',
+                    address2: 'Receiving Door 32',
+                    city: 'Carrollton',
+                    companyName: 'Mercatalyst',
+                    country: 'US',
+                    postalCode: '75010',
+                    state: 'TX'
+                }
+            };
+
+            const response = await dhlEcommerceSolutions.createLabel(_request);
+
+            assert(response);
+            assert(response.labels.every(label => label.labelData));
+            assert(response.labels.every(label => label.format === 'ZPL'));
+        });
     });
 
     t.test('createManifest', { concurrency: true, timeout: 4000 }, (t) => {
@@ -719,6 +763,20 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             await assert.rejects(dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '5351244' }), {
                 message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
             });
+        });
+
+        t.test('should return a response when no callback is provided', { timeout: 3000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            });
+
+            const response = await dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '5351244' });
+
+            assert.ok(response.timestamp);
+            assert.notStrictEqual(NaN, Date.parse(response.timestamp));
+            assert.ok(response.requestId);
+            assert.ok(response.link);
         });
     });
 
@@ -863,6 +921,31 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             await assert.rejects(dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a'), {
                 message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
             });
+        });
+
+        t.test('should return a response when no callback is provided', { timeout: 3000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            });
+
+            const pickup = '5351244';
+
+            const { requestId } = await dhlEcommerceSolutions.createManifest({ manifests: [], pickup });
+
+            assert.ok(requestId);
+
+            const response = await dhlEcommerceSolutions.downloadManifest(pickup, requestId);
+
+            assert.ifError(response.errorCode);
+            assert.ifError(response.errorDescription);
+
+            assert.ok(response.manifestSummary);
+            assert(Number.isInteger(response.manifestSummary.total));
+            assert.strictEqual(pickup, response.pickup);
+            assert.strictEqual(requestId, response.requestId);
+            assert.strictEqual(['CREATED', 'IN_PROGRESS', 'COMPLETED'].includes(response.status), true);
+            assert.notStrictEqual(NaN, Date.parse(response.timestamp));
         });
     });
 
@@ -1037,6 +1120,51 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             await assert.rejects(dhlEcommerceSolutions.findProducts({}), {
                 message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
             });
+        });
+
+        t.test('should return a valid response when no callback is provided', { timeout: 10000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            });
+
+            const _request = {
+                consigneeAddress: {
+                    address1: '114 Whitney Ave',
+                    city: 'New Haven',
+                    country: 'US',
+                    name: 'John Doe',
+                    postalCode: '06510',
+                    state: 'CT'
+                },
+                distributionCenter: 'USDFW1',
+                packageDetail: {
+                    packageDescription: 'ORDER NO 20483739DFDR',
+                    packageId: 'GM60511234500000001',
+                    weight: {
+                        unitOfMeasure: 'LB',
+                        value: 3
+                    }
+                },
+                pickup: '5351244',
+                rate: {
+                    calculate: true,
+                    currency: 'USD'
+                },
+                returnAddress: {
+                    address1: '1950 Parker Road',
+                    address2: 'Receiving Door 32',
+                    city: 'Carrollton',
+                    companyName: 'Mercatalyst',
+                    country: 'US',
+                    postalCode: '75010',
+                    state: 'TX'
+                }
+            };
+
+            const response = await dhlEcommerceSolutions.findProducts(_request);
+
+            assert(Array.isArray(response.products));
         });
     });
 
@@ -1281,6 +1409,17 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
             });
         });
+
+        t.test('should return a response when no callback is provided', { timeout: 10000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            });
+
+            const response = await dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482');
+
+            assert.strictEqual(response.packages[0].package.packageId, 'V4-TEST-1586965592482');
+        });
     });
 
     t.test('getTrackingByTrackingId', { concurrency: true, timeout: 10000 }, (t) => {
@@ -1403,6 +1542,17 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             await assert.rejects(dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299'), {
                 message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
             });
+        });
+
+        t.test('should return a response when no callback is provided', { timeout: 10000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            });
+
+            const response = await dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299');
+
+            assert.strictEqual(response.packages.length, 0);
         });
     });
 });
