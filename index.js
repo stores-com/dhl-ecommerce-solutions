@@ -2,22 +2,14 @@ const cache = require('memory-cache');
 const HttpError = require('@stores.com/http-error');
 
 /**
- * Reads the response body and mirrors the behavior of the request module's `json: true` option:
- * the body is parsed as JSON when possible and left as raw text when it isn't.
+ * Throws an HttpError for any non-200 response and returns the parsed JSON body otherwise.
  */
 async function parseResponse(res) {
     if (res.status !== 200) {
         throw await HttpError.from(res);
     }
 
-    const text = await res.text();
-
-    try {
-        return JSON.parse(text);
-    } catch {
-        // Not JSON, so return the raw text
-        return text;
-    }
+    return await res.json();
 }
 
 function DhlEcommerceSolutions(args) {
