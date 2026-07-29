@@ -1,34 +1,29 @@
 const cache = require('memory-cache');
-const createError = require('http-errors');
+const HttpError = require('@stores.com/http-error');
 
 /**
  * Reads the response body and mirrors the behavior of the request module's `json: true` option:
  * the body is parsed as JSON when possible and left as raw text when it isn't.
  */
 async function parseResponse(res) {
+    if (res.status !== 200) {
+        throw await HttpError.from(res);
+    }
+
     const text = await res.text();
 
-    let response = text;
-
     try {
-        response = JSON.parse(text);
+        return JSON.parse(text);
     } catch {
-        // Not JSON, so keep the raw text
+        // Not JSON, so return the raw text
+        return text;
     }
-
-    if (res.status !== 200) {
-        const err = createError(res.status);
-        err.response = response;
-
-        throw err;
-    }
-
-    return response;
 }
 
 function DhlEcommerceSolutions(args) {
     const options = Object.assign({
-        environment_url: 'https://api-sandbox.dhlecs.com'
+        environment_url: 'https://api-sandbox.dhlecs.com',
+        timeout: 10000
     }, args);
 
     /**
@@ -118,7 +113,8 @@ function DhlEcommerceSolutions(args) {
                     'Authorization': `Bearer ${accessToken.access_token}`,
                     'Content-Type': 'application/json'
                 },
-                method: 'POST'
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
             });
 
             return await parseResponse(res);
@@ -145,7 +141,8 @@ function DhlEcommerceSolutions(args) {
                     'Authorization': `Bearer ${accessToken.access_token}`,
                     'Content-Type': 'application/json'
                 },
-                method: 'POST'
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
             });
 
             return await parseResponse(res);
@@ -170,7 +167,8 @@ function DhlEcommerceSolutions(args) {
             const res = await fetch(`${options.environment_url}/shipping/v4/manifest/${pickup}/${requestId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken.access_token}`
-                }
+                },
+                signal: AbortSignal.timeout(options.timeout)
             });
 
             return await parseResponse(res);
@@ -196,7 +194,8 @@ function DhlEcommerceSolutions(args) {
                     'Authorization': `Bearer ${accessToken.access_token}`,
                     'Content-Type': 'application/json'
                 },
-                method: 'POST'
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
             });
 
             return await parseResponse(res);
@@ -233,7 +232,8 @@ function DhlEcommerceSolutions(args) {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                method: 'POST'
+                method: 'POST',
+                signal: AbortSignal.timeout(options.timeout)
             });
 
             const response = await parseResponse(res);
@@ -261,7 +261,8 @@ function DhlEcommerceSolutions(args) {
             const res = await fetch(`${options.environment_url}/tracking/v4/package?packageId=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken.access_token}`
-                }
+                },
+                signal: AbortSignal.timeout(options.timeout)
             });
 
             return await parseResponse(res);
@@ -284,7 +285,8 @@ function DhlEcommerceSolutions(args) {
             const res = await fetch(`${options.environment_url}/tracking/v4/package?trackingId=${trackingId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken.access_token}`
-                }
+                },
+                signal: AbortSignal.timeout(options.timeout)
             });
 
             return await parseResponse(res);

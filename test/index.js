@@ -445,8 +445,8 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.createLabel({}, (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Internal Server Error');
-                                assert.strictEqual(err.status, 500);
+                                assert.strictEqual(err.message, '500 Internal Server Error');
+                                assert.strictEqual(err.cause.status, 500);
                                 assert.strictEqual(response, undefined);
                                 resolve();
                             } catch (e) {
@@ -470,7 +470,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.createLabel({}, (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.status, 400);
+                        assert.strictEqual(err.cause.status, 400);
                         assert.strictEqual(response, undefined);
                         resolve();
                     } catch (e) {
@@ -673,8 +673,8 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '5351244' }, (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Internal Server Error');
-                                assert.strictEqual(err.status, 500);
+                                assert.strictEqual(err.message, '500 Internal Server Error');
+                                assert.strictEqual(err.cause.status, 500);
                                 assert.strictEqual(response, undefined);
                                 resolve();
                             } catch (e) {
@@ -800,8 +800,8 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a', (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Internal Server Error');
-                                assert.strictEqual(err.status, 500);
+                                assert.strictEqual(err.message, '500 Internal Server Error');
+                                assert.strictEqual(err.cause.status, 500);
                                 assert.strictEqual(response, undefined);
                                 resolve();
                             } catch (e) {
@@ -941,8 +941,8 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.findProducts({}, (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Internal Server Error');
-                                assert.strictEqual(err.status, 500);
+                                assert.strictEqual(err.message, '500 Internal Server Error');
+                                assert.strictEqual(err.cause.status, 500);
                                 assert.strictEqual(response, undefined);
                                 resolve();
                             } catch (e) {
@@ -966,7 +966,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.findProducts({}, (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.status, 400);
+                        assert.strictEqual(err.cause.status, 400);
                         assert.strictEqual(response, undefined);
                         resolve();
                     } catch (e) {
@@ -1072,8 +1072,8 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.getAccessToken((err, accessToken) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Internal Server Error');
-                        assert.strictEqual(err.status, 500);
+                        assert.strictEqual(err.message, '500 Internal Server Error');
+                        assert.strictEqual(err.cause.status, 500);
                         assert.strictEqual(accessToken, undefined);
                         resolve();
                     } catch (e) {
@@ -1238,8 +1238,8 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Internal Server Error');
-                                assert.strictEqual(err.status, 500);
+                                assert.strictEqual(err.message, '500 Internal Server Error');
+                                assert.strictEqual(err.cause.status, 500);
                                 assert.strictEqual(response, undefined);
                                 resolve();
                             } catch (e) {
@@ -1361,8 +1361,8 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299', (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Internal Server Error');
-                                assert.strictEqual(err.status, 500);
+                                assert.strictEqual(err.message, '500 Internal Server Error');
+                                assert.strictEqual(err.cause.status, 500);
                                 assert.strictEqual(response, undefined);
                                 resolve();
                             } catch (e) {
