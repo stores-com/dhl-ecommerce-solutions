@@ -26,7 +26,8 @@ This is a Node.js SDK for the DHL eCommerce Solutions Americas API. It provides 
 ## Architecture
 
 ### Core Module Structure
-The SDK follows a single-class pattern where all API methods are exposed through the `DhlEcommerceSolutions` class in index.js.
+The SDK is a single constructor function, `DhlEcommerceSolutions` in index.js, with every API
+method assigned to `this`. It is not an ES class; there is no `class` keyword in the file.
 
 ### Key Components:
 
