@@ -8,6 +8,9 @@
         "@eslint/js": "*",
         "globals": "*"
     },
+    "engines": {
+        "node": ">=18"
+    },
     "keywords": [
         "logistics",
         "dhl",
