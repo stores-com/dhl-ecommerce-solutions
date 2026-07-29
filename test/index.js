@@ -380,7 +380,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.createLabel({}, (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Invalid URI "invalid/auth/v4/accesstoken"');
+                        assert.strictEqual(err.message, 'Failed to parse URL from invalid/auth/v4/accesstoken');
                         assert.strictEqual(err.status, undefined);
                         assert.strictEqual(response, undefined);
                         resolve();
@@ -412,7 +412,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.createLabel({}, (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Invalid URI "invalid/shipping/v4/label?format=ZPL"');
+                                assert.strictEqual(err.message, 'Failed to parse URL from invalid/shipping/v4/label?format=ZPL');
                                 assert.strictEqual(err.status, undefined);
                                 assert.strictEqual(response, undefined);
                                 resolve();
@@ -583,6 +583,16 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 });
             });
         });
+
+        t.test('should reject for invalid environment_url when no callback is provided', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                environment_url: 'invalid'
+            });
+
+            await assert.rejects(dhlEcommerceSolutions.createLabel({}), {
+                message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
+            });
+        });
     });
 
     t.test('createManifest', { concurrency: true, timeout: 4000 }, (t) => {
@@ -595,7 +605,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '1234567' }, (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Invalid URI "invalid/auth/v4/accesstoken"');
+                        assert.strictEqual(err.message, 'Failed to parse URL from invalid/auth/v4/accesstoken');
                         assert.strictEqual(err.status, undefined);
                         assert.strictEqual(response, undefined);
                         resolve();
@@ -627,7 +637,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '5351244' }, (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Invalid URI "invalid/shipping/v4/manifest"');
+                                assert.strictEqual(err.message, 'Failed to parse URL from invalid/shipping/v4/manifest');
                                 assert.strictEqual(err.status, undefined);
                                 assert.strictEqual(response, undefined);
                                 resolve();
@@ -700,6 +710,16 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 });
             });
         });
+
+        t.test('should reject for invalid environment_url when no callback is provided', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                environment_url: 'invalid'
+            });
+
+            await assert.rejects(dhlEcommerceSolutions.createManifest({ manifests: [], pickup: '5351244' }), {
+                message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
+            });
+        });
     });
 
     t.test('downloadManifest', { concurrency: true, timeout: 4000 }, (t) => {
@@ -712,7 +732,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a', (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Invalid URI "invalid/auth/v4/accesstoken"');
+                        assert.strictEqual(err.message, 'Failed to parse URL from invalid/auth/v4/accesstoken');
                         assert.strictEqual(err.status, undefined);
                         assert.strictEqual(response, undefined);
                         resolve();
@@ -744,7 +764,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a', (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Invalid URI "invalid/shipping/v4/manifest/5351244/b56fe9d0-1111-2222-a11f-f8f8635f985a"');
+                                assert.strictEqual(err.message, 'Failed to parse URL from invalid/shipping/v4/manifest/5351244/b56fe9d0-1111-2222-a11f-f8f8635f985a');
                                 assert.strictEqual(err.status, undefined);
                                 assert.strictEqual(response, undefined);
                                 resolve();
@@ -834,6 +854,16 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 });
             });
         });
+
+        t.test('should reject for invalid environment_url when no callback is provided', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                environment_url: 'invalid'
+            });
+
+            await assert.rejects(dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a'), {
+                message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
+            });
+        });
     });
 
     t.test('findProducts', { concurrency: true, timeout: 10000 }, (t) => {
@@ -846,7 +876,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.findProducts({}, (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Invalid URI "invalid/auth/v4/accesstoken"');
+                        assert.strictEqual(err.message, 'Failed to parse URL from invalid/auth/v4/accesstoken');
                         assert.strictEqual(err.status, undefined);
                         assert.strictEqual(response, undefined);
                         resolve();
@@ -878,7 +908,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.findProducts({}, (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Invalid URI "invalid/shipping/v4/products"');
+                                assert.strictEqual(err.message, 'Failed to parse URL from invalid/shipping/v4/products');
                                 assert.strictEqual(err.status, undefined);
                                 assert.strictEqual(response, undefined);
                                 resolve();
@@ -998,6 +1028,16 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 });
             });
         });
+
+        t.test('should reject for invalid environment_url when no callback is provided', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                environment_url: 'invalid'
+            });
+
+            await assert.rejects(dhlEcommerceSolutions.findProducts({}), {
+                message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
+            });
+        });
     });
 
     t.test('getAccessToken', { concurrency: true, timeout: 3000 }, (t) => {
@@ -1010,7 +1050,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.getAccessToken((err, accessToken) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Invalid URI "invalid/auth/v4/accesstoken"');
+                        assert.strictEqual(err.message, 'Failed to parse URL from invalid/auth/v4/accesstoken');
                         assert.strictEqual(err.status, undefined);
                         assert.strictEqual(accessToken, undefined);
                         resolve();
@@ -1093,6 +1133,31 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 });
             });
         });
+
+        t.test('should reject for invalid environment_url when no callback is provided', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                environment_url: 'invalid'
+            });
+
+            await assert.rejects(dhlEcommerceSolutions.getAccessToken(), {
+                message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
+            });
+        });
+
+        t.test('should return a valid access token when no callback is provided', { timeout: 3000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            });
+
+            const accessToken = await dhlEcommerceSolutions.getAccessToken();
+
+            assert(accessToken);
+            assert(accessToken.access_token);
+            assert(accessToken.client_id);
+            assert(accessToken.expires_in);
+            assert.strictEqual(accessToken.token_type, 'Bearer');
+        });
     });
 
     t.test('getTrackingByPackageId', { concurrency: true, timeout: 4000 }, (t) => {
@@ -1105,7 +1170,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Invalid URI "invalid/auth/v4/accesstoken"');
+                        assert.strictEqual(err.message, 'Failed to parse URL from invalid/auth/v4/accesstoken');
                         assert.strictEqual(err.status, undefined);
                         assert.strictEqual(response, undefined);
                         resolve();
@@ -1137,7 +1202,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Invalid URI "invalid/tracking/v4/package?packageId=V4-TEST-1586965592482"');
+                                assert.strictEqual(err.message, 'Failed to parse URL from invalid/tracking/v4/package?packageId=V4-TEST-1586965592482');
                                 assert.strictEqual(err.status, undefined);
                                 assert.strictEqual(response, undefined);
                                 resolve();
@@ -1206,6 +1271,16 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 });
             });
         });
+
+        t.test('should reject for invalid environment_url when no callback is provided', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                environment_url: 'invalid'
+            });
+
+            await assert.rejects(dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482'), {
+                message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
+            });
+        });
     });
 
     t.test('getTrackingByTrackingId', { concurrency: true, timeout: 10000 }, (t) => {
@@ -1218,7 +1293,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299', (err, response) => {
                     try {
                         assert(err);
-                        assert.strictEqual(err.message, 'Invalid URI "invalid/auth/v4/accesstoken"');
+                        assert.strictEqual(err.message, 'Failed to parse URL from invalid/auth/v4/accesstoken');
                         assert.strictEqual(err.status, undefined);
                         assert.strictEqual(response, undefined);
                         resolve();
@@ -1250,7 +1325,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299', (err, response) => {
                             try {
                                 assert(err);
-                                assert.strictEqual(err.message, 'Invalid URI "invalid/tracking/v4/package?trackingId=9374869903500011991299"');
+                                assert.strictEqual(err.message, 'Failed to parse URL from invalid/tracking/v4/package?trackingId=9374869903500011991299');
                                 assert.strictEqual(err.status, undefined);
                                 assert.strictEqual(response, undefined);
                                 resolve();
@@ -1317,6 +1392,16 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                         reject(e);
                     }
                 });
+            });
+        });
+
+        t.test('should reject for invalid environment_url when no callback is provided', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({
+                environment_url: 'invalid'
+            });
+
+            await assert.rejects(dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299'), {
+                message: 'Failed to parse URL from invalid/auth/v4/accesstoken'
             });
         });
     });
