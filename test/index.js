@@ -1198,7 +1198,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
                 dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', (err, response) => {
                     try {
                         assert.ifError(err);
-                        assert.strictEqual(response.packages.length, 1);
+                        assert.strictEqual(response.packages[0].package.packageId, 'V4-TEST-1586965592482');
                         resolve();
                     } catch (e) {
                         reject(e);
