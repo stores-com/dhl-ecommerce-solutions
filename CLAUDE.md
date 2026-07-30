@@ -36,9 +36,8 @@ method assigned to `this`. It is not an ES class; there is no `class` keyword in
    - Access tokens are cached in memory using `memory-cache` module
    - Tokens auto-refresh at half their expiry time
 
-2. **API Methods** - Every method that makes a request takes an optional callback and returns a
-   promise when the callback is omitted (the executor pattern). `applyDimensionalWeight` is
-   synchronous.
+2. **API Methods** - Every method that makes a request is an `async function` and returns a
+   promise. Callbacks were removed in 1.0.0. `applyDimensionalWeight` is synchronous.
 
    - `getAccessToken()` - Handles OAuth authentication
    - `createLabel()` - Generate shipping labels (ZPL or PNG format)

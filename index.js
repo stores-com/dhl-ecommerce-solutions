@@ -84,73 +84,45 @@ function DhlEcommerceSolutions(args) {
     /**
      * The Label endpoint can generate a US Domestic or an International label.
      */
-    this.createLabel = function(_request, _options = {}, callback) {
-        // Options are optional
-        if (typeof _options === 'function') {
-            callback = _options;
-            _options = {};
-        }
-
+    this.createLabel = async function(_request, _options = {}) {
         // Default format is ZPL
         if (!_options.format) {
             _options.format = 'ZPL';
         }
 
-        const executor = async () => {
-            const accessToken = await this.getAccessToken(_options);
+        const accessToken = await this.getAccessToken(_options);
 
-            const res = await fetch(`${options.environment_url}/shipping/v4/label?format=${_options.format}`, {
-                body: JSON.stringify(_request),
-                headers: {
-                    'Authorization': `Bearer ${accessToken.access_token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST',
-                signal: AbortSignal.timeout(_options.timeout || options.timeout)
-            });
+        const res = await fetch(`${options.environment_url}/shipping/v4/label?format=${_options.format}`, {
+            body: JSON.stringify(_request),
+            headers: {
+                'Authorization': `Bearer ${accessToken.access_token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            signal: AbortSignal.timeout(_options.timeout || options.timeout)
+        });
 
-            return await parseResponse(res);
-        };
-
-        if (callback) {
-            executor().then(result => callback(null, result)).catch(callback);
-        } else {
-            return executor();
-        }
+        return await parseResponse(res);
     };
 
     /**
      * Manifest specific open packages (recommended): Only packages specified in the request are added to a request id and only those items will be manifested.
      * Manifest all open items: The last 20,000 labels generated for the given pickup location are added to a request id and will be manifested.
      */
-    this.createManifest = function(_request, _options = {}, callback) {
-        // Options are optional
-        if (typeof _options === 'function') {
-            callback = _options;
-            _options = {};
-        }
+    this.createManifest = async function(_request, _options = {}) {
+        const accessToken = await this.getAccessToken(_options);
 
-        const executor = async () => {
-            const accessToken = await this.getAccessToken(_options);
+        const res = await fetch(`${options.environment_url}/shipping/v4/manifest`, {
+            body: JSON.stringify(_request),
+            headers: {
+                'Authorization': `Bearer ${accessToken.access_token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            signal: AbortSignal.timeout(_options.timeout || options.timeout)
+        });
 
-            const res = await fetch(`${options.environment_url}/shipping/v4/manifest`, {
-                body: JSON.stringify(_request),
-                headers: {
-                    'Authorization': `Bearer ${accessToken.access_token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST',
-                signal: AbortSignal.timeout(_options.timeout || options.timeout)
-            });
-
-            return await parseResponse(res);
-        };
-
-        if (callback) {
-            executor().then(result => callback(null, result)).catch(callback);
-        } else {
-            return executor();
-        }
+        return await parseResponse(res);
     };
 
     /**
@@ -158,173 +130,103 @@ function DhlEcommerceSolutions(args) {
      * @param {string} pickup DHL eCommerce pickup account number. You will receive this after doing the onboarding with DHL sales
      * @param {string} requestId DHL eCommerce manifest request ID that was provided in the POST manifest response object
      */
-    this.downloadManifest = function(pickup, requestId, _options = {}, callback) {
-        // Options are optional
-        if (typeof _options === 'function') {
-            callback = _options;
-            _options = {};
-        }
+    this.downloadManifest = async function(pickup, requestId, _options = {}) {
+        const accessToken = await this.getAccessToken(_options);
 
-        const executor = async () => {
-            const accessToken = await this.getAccessToken(_options);
+        const res = await fetch(`${options.environment_url}/shipping/v4/manifest/${pickup}/${requestId}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken.access_token}`
+            },
+            signal: AbortSignal.timeout(_options.timeout || options.timeout)
+        });
 
-            const res = await fetch(`${options.environment_url}/shipping/v4/manifest/${pickup}/${requestId}`, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken.access_token}`
-                },
-                signal: AbortSignal.timeout(_options.timeout || options.timeout)
-            });
-
-            return await parseResponse(res);
-        };
-
-        if (callback) {
-            executor().then(result => callback(null, result)).catch(callback);
-        } else {
-            return executor();
-        }
+        return await parseResponse(res);
     };
 
     /**
      * DHL eCommerce Americas Product Finder API enables clients to determine which DHL shipping products are suitable for a given shipping request including associated rates and estimated delivery dates.
      */
-    this.findProducts = function(_request, _options = {}, callback) {
-        // Options are optional
-        if (typeof _options === 'function') {
-            callback = _options;
-            _options = {};
-        }
+    this.findProducts = async function(_request, _options = {}) {
+        const accessToken = await this.getAccessToken(_options);
 
-        const executor = async () => {
-            const accessToken = await this.getAccessToken(_options);
+        const res = await fetch(`${options.environment_url}/shipping/v4/products`, {
+            body: JSON.stringify(_request),
+            headers: {
+                'Authorization': `Bearer ${accessToken.access_token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            signal: AbortSignal.timeout(_options.timeout || options.timeout)
+        });
 
-            const res = await fetch(`${options.environment_url}/shipping/v4/products`, {
-                body: JSON.stringify(_request),
-                headers: {
-                    'Authorization': `Bearer ${accessToken.access_token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST',
-                signal: AbortSignal.timeout(_options.timeout || options.timeout)
-            });
-
-            return await parseResponse(res);
-        };
-
-        if (callback) {
-            executor().then(result => callback(null, result)).catch(callback);
-        } else {
-            return executor();
-        }
+        return await parseResponse(res);
     };
 
     /**
      * To access any of DHL eCommerce's API resources, client credentials (clientId and clientSecret) are required which must be exchanged for an access token.
      */
-    this.getAccessToken = function(_options = {}, callback) {
-        // Options are optional
-        if (typeof _options === 'function') {
-            callback = _options;
-            _options = {};
-        }
-
+    this.getAccessToken = async function(_options = {}) {
         const url = `${options.environment_url}/auth/v4/accesstoken`;
         const key = `${url}?client_id=${options.client_id}`;
 
-        const executor = async () => {
-            // Try to get the access token from memory cache
-            const accessToken = cache.get(key);
+        // Try to get the access token from memory cache
+        const accessToken = cache.get(key);
 
-            if (accessToken) {
-                return accessToken;
-            }
-
-            const res = await fetch(url, {
-                body: new URLSearchParams({
-                    client_id: options.client_id,
-                    client_secret: options.client_secret,
-                    grant_type: 'client_credentials'
-                }),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                method: 'POST',
-                signal: AbortSignal.timeout(_options.timeout || options.timeout)
-            });
-
-            const response = await parseResponse(res);
-
-            // Put the access token in memory cache
-            cache.put(key, response, response.expires_in * 1000 / 2);
-
-            return response;
-        };
-
-        if (callback) {
-            executor().then(result => callback(null, result)).catch(callback);
-        } else {
-            return executor();
+        if (accessToken) {
+            return accessToken;
         }
+
+        const res = await fetch(url, {
+            body: new URLSearchParams({
+                client_id: options.client_id,
+                client_secret: options.client_secret,
+                grant_type: 'client_credentials'
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            signal: AbortSignal.timeout(_options.timeout || options.timeout)
+        });
+
+        const response = await parseResponse(res);
+
+        // Put the access token in memory cache
+        cache.put(key, response, response.expires_in * 1000 / 2);
+
+        return response;
     };
 
     /**
      * Track using a single packageId.
      */
-    this.getTrackingByPackageId = function(packageId, _options = {}, callback) {
-        // Options are optional
-        if (typeof _options === 'function') {
-            callback = _options;
-            _options = {};
-        }
+    this.getTrackingByPackageId = async function(packageId, _options = {}) {
+        const accessToken = await this.getAccessToken(_options);
 
-        const executor = async () => {
-            const accessToken = await this.getAccessToken(_options);
+        const res = await fetch(`${options.environment_url}/tracking/v4/package?packageId=${packageId}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken.access_token}`
+            },
+            signal: AbortSignal.timeout(_options.timeout || options.timeout)
+        });
 
-            const res = await fetch(`${options.environment_url}/tracking/v4/package?packageId=${packageId}`, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken.access_token}`
-                },
-                signal: AbortSignal.timeout(_options.timeout || options.timeout)
-            });
-
-            return await parseResponse(res);
-        };
-
-        if (callback) {
-            executor().then(result => callback(null, result)).catch(callback);
-        } else {
-            return executor();
-        }
+        return await parseResponse(res);
     };
 
     /**
      * Track using a single trackingId.
      */
-    this.getTrackingByTrackingId = function(trackingId, _options = {}, callback) {
-        // Options are optional
-        if (typeof _options === 'function') {
-            callback = _options;
-            _options = {};
-        }
+    this.getTrackingByTrackingId = async function(trackingId, _options = {}) {
+        const accessToken = await this.getAccessToken(_options);
 
-        const executor = async () => {
-            const accessToken = await this.getAccessToken(_options);
+        const res = await fetch(`${options.environment_url}/tracking/v4/package?trackingId=${trackingId}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken.access_token}`
+            },
+            signal: AbortSignal.timeout(_options.timeout || options.timeout)
+        });
 
-            const res = await fetch(`${options.environment_url}/tracking/v4/package?trackingId=${trackingId}`, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken.access_token}`
-                },
-                signal: AbortSignal.timeout(_options.timeout || options.timeout)
-            });
-
-            return await parseResponse(res);
-        };
-
-        if (callback) {
-            executor().then(result => callback(null, result)).catch(callback);
-        } else {
-            return executor();
-        }
+        return await parseResponse(res);
     };
 }
 
