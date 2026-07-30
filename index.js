@@ -97,7 +97,7 @@ function DhlEcommerceSolutions(args) {
         }
 
         const executor = async () => {
-            const accessToken = await this.getAccessToken();
+            const accessToken = await this.getAccessToken(_options);
 
             const res = await fetch(`${options.environment_url}/shipping/v4/label?format=${_options.format}`, {
                 body: JSON.stringify(_request),
@@ -106,7 +106,7 @@ function DhlEcommerceSolutions(args) {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
-                signal: AbortSignal.timeout(options.timeout)
+                signal: AbortSignal.timeout(_options.timeout || options.timeout)
             });
 
             return await parseResponse(res);
@@ -123,9 +123,15 @@ function DhlEcommerceSolutions(args) {
      * Manifest specific open packages (recommended): Only packages specified in the request are added to a request id and only those items will be manifested.
      * Manifest all open items: The last 20,000 labels generated for the given pickup location are added to a request id and will be manifested.
      */
-    this.createManifest = function(_request, callback) {
+    this.createManifest = function(_request, _options = {}, callback) {
+        // Options are optional
+        if (typeof _options === 'function') {
+            callback = _options;
+            _options = {};
+        }
+
         const executor = async () => {
-            const accessToken = await this.getAccessToken();
+            const accessToken = await this.getAccessToken(_options);
 
             const res = await fetch(`${options.environment_url}/shipping/v4/manifest`, {
                 body: JSON.stringify(_request),
@@ -134,7 +140,7 @@ function DhlEcommerceSolutions(args) {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
-                signal: AbortSignal.timeout(options.timeout)
+                signal: AbortSignal.timeout(_options.timeout || options.timeout)
             });
 
             return await parseResponse(res);
@@ -152,15 +158,21 @@ function DhlEcommerceSolutions(args) {
      * @param {string} pickup DHL eCommerce pickup account number. You will receive this after doing the onboarding with DHL sales
      * @param {string} requestId DHL eCommerce manifest request ID that was provided in the POST manifest response object
      */
-    this.downloadManifest = function(pickup, requestId, callback) {
+    this.downloadManifest = function(pickup, requestId, _options = {}, callback) {
+        // Options are optional
+        if (typeof _options === 'function') {
+            callback = _options;
+            _options = {};
+        }
+
         const executor = async () => {
-            const accessToken = await this.getAccessToken();
+            const accessToken = await this.getAccessToken(_options);
 
             const res = await fetch(`${options.environment_url}/shipping/v4/manifest/${pickup}/${requestId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken.access_token}`
                 },
-                signal: AbortSignal.timeout(options.timeout)
+                signal: AbortSignal.timeout(_options.timeout || options.timeout)
             });
 
             return await parseResponse(res);
@@ -176,9 +188,15 @@ function DhlEcommerceSolutions(args) {
     /**
      * DHL eCommerce Americas Product Finder API enables clients to determine which DHL shipping products are suitable for a given shipping request including associated rates and estimated delivery dates.
      */
-    this.findProducts = function(_request, callback) {
+    this.findProducts = function(_request, _options = {}, callback) {
+        // Options are optional
+        if (typeof _options === 'function') {
+            callback = _options;
+            _options = {};
+        }
+
         const executor = async () => {
-            const accessToken = await this.getAccessToken();
+            const accessToken = await this.getAccessToken(_options);
 
             const res = await fetch(`${options.environment_url}/shipping/v4/products`, {
                 body: JSON.stringify(_request),
@@ -187,7 +205,7 @@ function DhlEcommerceSolutions(args) {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
-                signal: AbortSignal.timeout(options.timeout)
+                signal: AbortSignal.timeout(_options.timeout || options.timeout)
             });
 
             return await parseResponse(res);
@@ -203,7 +221,13 @@ function DhlEcommerceSolutions(args) {
     /**
      * To access any of DHL eCommerce's API resources, client credentials (clientId and clientSecret) are required which must be exchanged for an access token.
      */
-    this.getAccessToken = function(callback) {
+    this.getAccessToken = function(_options = {}, callback) {
+        // Options are optional
+        if (typeof _options === 'function') {
+            callback = _options;
+            _options = {};
+        }
+
         const url = `${options.environment_url}/auth/v4/accesstoken`;
         const key = `${url}?client_id=${options.client_id}`;
 
@@ -225,7 +249,7 @@ function DhlEcommerceSolutions(args) {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
-                signal: AbortSignal.timeout(options.timeout)
+                signal: AbortSignal.timeout(_options.timeout || options.timeout)
             });
 
             const response = await parseResponse(res);
@@ -246,15 +270,21 @@ function DhlEcommerceSolutions(args) {
     /**
      * Track using a single packageId.
      */
-    this.getTrackingByPackageId = function(packageId, callback) {
+    this.getTrackingByPackageId = function(packageId, _options = {}, callback) {
+        // Options are optional
+        if (typeof _options === 'function') {
+            callback = _options;
+            _options = {};
+        }
+
         const executor = async () => {
-            const accessToken = await this.getAccessToken();
+            const accessToken = await this.getAccessToken(_options);
 
             const res = await fetch(`${options.environment_url}/tracking/v4/package?packageId=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken.access_token}`
                 },
-                signal: AbortSignal.timeout(options.timeout)
+                signal: AbortSignal.timeout(_options.timeout || options.timeout)
             });
 
             return await parseResponse(res);
@@ -270,15 +300,21 @@ function DhlEcommerceSolutions(args) {
     /**
      * Track using a single trackingId.
      */
-    this.getTrackingByTrackingId = function(trackingId, callback) {
+    this.getTrackingByTrackingId = function(trackingId, _options = {}, callback) {
+        // Options are optional
+        if (typeof _options === 'function') {
+            callback = _options;
+            _options = {};
+        }
+
         const executor = async () => {
-            const accessToken = await this.getAccessToken();
+            const accessToken = await this.getAccessToken(_options);
 
             const res = await fetch(`${options.environment_url}/tracking/v4/package?trackingId=${trackingId}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken.access_token}`
                 },
-                signal: AbortSignal.timeout(options.timeout)
+                signal: AbortSignal.timeout(_options.timeout || options.timeout)
             });
 
             return await parseResponse(res);

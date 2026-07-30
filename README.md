@@ -32,6 +32,12 @@ const dhlEcommerceSolutions = new DhlEcommerceSolutions({
 | `environment_url` | `https://api-sandbox.dhlecs.com` | API endpoint. Production is `https://api.dhlecs.com`. |
 | `timeout` | `10000` | Milliseconds to wait before aborting a request. |
 
+Every method that makes a request also accepts a `timeout` option, which overrides the constructor value for that call only. It covers the access token request the call may need to make.
+
+```javascript
+const response = await dhlEcommerceSolutions.findProducts(request, { timeout: 5000 });
+```
+
 ### Callbacks and async/await
 
 Every method that makes a request takes an optional callback. Omit it and the method returns a promise instead.
@@ -155,7 +161,7 @@ dhlEcommerceSolutions.createLabel(request, { format: 'PNG' }, function(err, resp
 });
 ```
 
-### dhlEcommerceSolutions.createManifest(request, [callback])
+### dhlEcommerceSolutions.createManifest(request, [options], [callback])
 
 Use the Manifest API to submit a request for closing out / manifesting packages and generate a Driver's Summary Manifest (DSM).
 
@@ -181,7 +187,7 @@ dhlEcommerceSolutions.createManifest(request, function(err, response) {
 });
 ```
 
-### dhlEcommerceSolutions.downloadManifest(pickup, requestId, [callback])
+### dhlEcommerceSolutions.downloadManifest(pickup, requestId, [options], [callback])
 
 For Manifest requests that were created using the Create Manifest API, the Download Manifest API is used to retrieve and download the manifests.
 
@@ -195,7 +201,7 @@ dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-9bce-4d62-a11f-f8f86
 });
 ```
 
-### dhlEcommerceSolutions.findProducts(request, [callback])
+### dhlEcommerceSolutions.findProducts(request, [options], [callback])
 
 DHL eCommerce Americas Product Finder API enables clients to determine which DHL shipping products are suitable for a given shipping request including associated rates and estimated delivery dates (EDD).
 
@@ -243,7 +249,7 @@ dhlEcommerceSolutions.findProducts(request, function(err, response) {
 });
 ```
 
-### dhlEcommerceSolutions.getAccessToken([callback])
+### dhlEcommerceSolutions.getAccessToken([options], [callback])
 
 To access any of DHL eCommerce's API resources, client credentials (clientId and clientSecret) are required which must be exchanged for an access token.
 
@@ -257,7 +263,7 @@ dhlEcommerceSolutions.getAccessToken(function(err, accessToken) {
 });
 ```
 
-### dhlEcommerceSolutions.getTrackingByPackageId(packageId, [callback])
+### dhlEcommerceSolutions.getTrackingByPackageId(packageId, [options], [callback])
 
 This API is used to check the latest tracking status of any domestic or international package.
 
@@ -271,7 +277,7 @@ dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', function(e
 });
 ```
 
-### dhlEcommerceSolutions.getTrackingByTrackingId(trackingId, [callback])
+### dhlEcommerceSolutions.getTrackingByTrackingId(trackingId, [options], [callback])
 
 This API is used to check the latest tracking status of any domestic or international package using its tracking id.
 
