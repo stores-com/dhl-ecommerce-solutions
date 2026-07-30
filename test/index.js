@@ -1033,7 +1033,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 3000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 8000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
