@@ -60,7 +60,8 @@ method assigned to `this`. It is not an ES class; there is no `class` keyword in
 - `memory-cache` - In-memory caching for access tokens
 
 HTTP requests use the built-in `fetch`, so Node.js 18 or later is required and there is no HTTP
-dependency. Every request carries `signal: AbortSignal.timeout(options.timeout)`, default 10000ms.
+dependency. Every request carries `signal: AbortSignal.timeout(_options.timeout || options.timeout)`,
+so a per-call `timeout` option wins over the constructor value, which defaults to 10000ms.
 
 ### Testing
 - `node:test` with `node:assert`
@@ -77,7 +78,7 @@ The SDK requires:
 - `client_id` - DHL API client ID
 - `client_secret` - DHL API client secret
 - `environment_url` - API endpoint (defaults to sandbox: https://api-sandbox.dhlecs.com)
-- `timeout` - Milliseconds before a request is aborted (defaults to 10000)
+- `timeout` - Milliseconds before a request is aborted (defaults to 10000, overridable per call)
 
 Production URL: https://api.dhlecs.com
 

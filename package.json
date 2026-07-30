@@ -29,5 +29,5 @@
         "test": "node --test --test-force-exit test",
         "test:only": "node --test --test-force-exit --test-only test"
     },
-    "version": "0.5.0"
+    "version": "0.6.0"
 }

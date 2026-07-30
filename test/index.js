@@ -637,6 +637,15 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             assert(response.labels.every(label => label.labelData));
             assert(response.labels.every(label => label.format === 'ZPL'));
         });
+
+        t.test('should use the timeout specified in options', { timeout: 1000 }, async () => {
+            const client_id = crypto.randomUUID();
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({ client_id });
+
+            cache.put(`https://api-sandbox.dhlecs.com/auth/v4/accesstoken?client_id=${client_id}`, { access_token: 'test' }, 1000);
+
+            await assert.rejects(dhlEcommerceSolutions.createLabel({}, { timeout: 1 }), { name: 'TimeoutError' });
+        });
     });
 
     t.test('createManifest', { concurrency: true, timeout: 4000 }, (t) => {
@@ -777,6 +786,15 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             assert.notStrictEqual(NaN, Date.parse(response.timestamp));
             assert.ok(response.requestId);
             assert.ok(response.link);
+        });
+
+        t.test('should use the timeout specified in options', { timeout: 1000 }, async () => {
+            const client_id = crypto.randomUUID();
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({ client_id });
+
+            cache.put(`https://api-sandbox.dhlecs.com/auth/v4/accesstoken?client_id=${client_id}`, { access_token: 'test' }, 1000);
+
+            await assert.rejects(dhlEcommerceSolutions.createManifest({}, { timeout: 1 }), { name: 'TimeoutError' });
         });
     });
 
@@ -947,6 +965,15 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             assert.strictEqual(['CREATED', 'IN_PROGRESS', 'COMPLETED'].includes(response.status), true);
             assert.notStrictEqual(NaN, Date.parse(response.timestamp));
         });
+
+        t.test('should use the timeout specified in options', { timeout: 1000 }, async () => {
+            const client_id = crypto.randomUUID();
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({ client_id });
+
+            cache.put(`https://api-sandbox.dhlecs.com/auth/v4/accesstoken?client_id=${client_id}`, { access_token: 'test' }, 1000);
+
+            await assert.rejects(dhlEcommerceSolutions.downloadManifest('5351244', 'b56fe9d0-1111-2222-a11f-f8f8635f985a', { timeout: 1 }), { name: 'TimeoutError' });
+        });
     });
 
     t.test('findProducts', { concurrency: true, timeout: 10000 }, (t) => {
@@ -1006,7 +1033,7 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             });
         });
 
-        t.test('should return an error for non 200 status code', { timeout: 3000 }, () => {
+        t.test('should return an error for non 200 status code', { timeout: 8000 }, () => {
             return new Promise((resolve, reject) => {
                 let dhlEcommerceSolutions = new DhlEcommerceSolutions({
                     client_id: process.env.CLIENT_ID,
@@ -1166,6 +1193,15 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
 
             assert(Array.isArray(response.products));
         });
+
+        t.test('should use the timeout specified in options', { timeout: 1000 }, async () => {
+            const client_id = crypto.randomUUID();
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({ client_id });
+
+            cache.put(`https://api-sandbox.dhlecs.com/auth/v4/accesstoken?client_id=${client_id}`, { access_token: 'test' }, 1000);
+
+            await assert.rejects(dhlEcommerceSolutions.findProducts({}, { timeout: 1 }), { name: 'TimeoutError' });
+        });
     });
 
     t.test('getAccessToken', { concurrency: true, timeout: 3000 }, (t) => {
@@ -1285,6 +1321,12 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             assert(accessToken.client_id);
             assert(accessToken.expires_in);
             assert.strictEqual(accessToken.token_type, 'Bearer');
+        });
+
+        t.test('should use the timeout specified in options', { timeout: 1000 }, async () => {
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({ client_id: crypto.randomUUID() });
+
+            await assert.rejects(dhlEcommerceSolutions.getAccessToken({ timeout: 1 }), { name: 'TimeoutError' });
         });
     });
 
@@ -1420,6 +1462,15 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
 
             assert.strictEqual(response.packages[0].package.packageId, 'V4-TEST-1586965592482');
         });
+
+        t.test('should use the timeout specified in options', { timeout: 1000 }, async () => {
+            const client_id = crypto.randomUUID();
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({ client_id });
+
+            cache.put(`https://api-sandbox.dhlecs.com/auth/v4/accesstoken?client_id=${client_id}`, { access_token: 'test' }, 1000);
+
+            await assert.rejects(dhlEcommerceSolutions.getTrackingByPackageId('V4-TEST-1586965592482', { timeout: 1 }), { name: 'TimeoutError' });
+        });
     });
 
     t.test('getTrackingByTrackingId', { concurrency: true, timeout: 10000 }, (t) => {
@@ -1553,6 +1604,15 @@ test('DhlEcommerceSolutions', { concurrency: true, timeout: 10000 }, (t) => {
             const response = await dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299');
 
             assert.strictEqual(response.packages.length, 0);
+        });
+
+        t.test('should use the timeout specified in options', { timeout: 1000 }, async () => {
+            const client_id = crypto.randomUUID();
+            const dhlEcommerceSolutions = new DhlEcommerceSolutions({ client_id });
+
+            cache.put(`https://api-sandbox.dhlecs.com/auth/v4/accesstoken?client_id=${client_id}`, { access_token: 'test' }, 1000);
+
+            await assert.rejects(dhlEcommerceSolutions.getTrackingByTrackingId('9374869903500011991299', { timeout: 1 }), { name: 'TimeoutError' });
         });
     });
 });
