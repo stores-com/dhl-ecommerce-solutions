@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-07-30
+
+### Breaking
+
+- Callbacks are gone. Every method that makes a request returns a promise and no longer accepts a callback argument. Replace `method(args, function(err, response) { ... })` with `await method(args)`, and handle failures with `try`/`catch` instead of an `err` argument.
+- Because the callback argument is gone, an options object is no longer distinguished from a callback at runtime. `getAccessToken(options)`, `createManifest(request, options)`, `downloadManifest(pickup, requestId, options)`, `findProducts(request, options)`, `getTrackingByPackageId(packageId, options)`, and `getTrackingByTrackingId(trackingId, options)` take their options in the same position as before.
+
 ## [0.6.0] - 2026-07-30
 
 ### Added
