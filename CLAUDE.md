@@ -85,6 +85,6 @@ Production URL: https://api.dhlecs.com
 
 GitHub Actions workflow (.github/workflows/test.yml):
 - Runs on push, PR, and manual dispatch
-- Node.js 24.11.0
+- Node.js 26
 - Executes linting, testing, and coverage reporting
 - Sends Slack notifications for build status
